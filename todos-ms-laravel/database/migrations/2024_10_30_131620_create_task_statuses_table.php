@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('todo_statuses', function (Blueprint $table) {
+        Schema::create('task_statuses', function (Blueprint $table) {
             $table->string("value")->primary();
             $table->string("label");
         });
 
-        Schema::table("todos", function (Blueprint $table) {
+        Schema::table("tasks", function (Blueprint $table) {
             $table->string("status")->default("pending");
-            $table->foreign("status")->references("value")->on("todo_statuses");
+            $table->foreign("status")->references("value")->on("task_statuses");
         });
     }
 
@@ -27,6 +27,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('todo_statuses');
+        Schema::dropIfExists('task_statuses');
+        Schema::table("tasks", function (Blueprint $table) {
+            $table->dropForeign(["status"]);
+            $table->dropColumn("status");
+        });
     }
 };

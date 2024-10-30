@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TodoStatus extends Model
+class TaskStatus extends Model
 {
     /** @use HasFactory<\Database\Factories\TodoStatusFactory> */
     use HasFactory;
@@ -13,6 +13,6 @@ class TodoStatus extends Model
 
     public function todos()
     {
-        return $this->hasMany(Todo::class);
+        return $this->hasMany(Task::class);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Todo;
-use App\Models\TodoStatus;
+use App\Models\Task;
+use App\Models\TaskStatus;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        TodoStatus::factory()->createMany([
+        TaskStatus::factory()->createMany([
             ['value' => 'pending', 'label' => 'Pendente'],
             ['value' => 'in_progress', 'label' => 'Em Progresso'],
             ['value' => 'on_hold', 'label' => 'Em Espera'],
@@ -30,6 +30,6 @@ class DatabaseSeeder extends Seeder
             ['value' => 'deleted', 'label' => 'Apagado'],
         ]);
 
-        Todo::factory(20)->create();
+        Task::factory(20)->create();
     }
 }
