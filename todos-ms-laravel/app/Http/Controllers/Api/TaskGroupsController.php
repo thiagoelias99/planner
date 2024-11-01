@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TaskGroupResource;
 use App\Models\TaskGroup;
 use App\Http\Requests\StoreTaskGroupRequest;
 use App\Http\Requests\UpdateTaskGroupRequest;
@@ -14,7 +15,7 @@ class TaskGroupsController extends Controller
      */
     public function index()
     {
-        return TaskGroup::with('tasks')->get();
+        return TaskGroupResource::collection(TaskGroup::with('tasks')->get());
     }
 
     /**
