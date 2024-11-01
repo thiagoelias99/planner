@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
+use App\Models\TaskGroup;
 use App\Models\TaskStatus;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -30,6 +31,15 @@ class DatabaseSeeder extends Seeder
             ['value' => 'deleted', 'label' => 'Apagado'],
         ]);
 
-        Task::factory(20)->create();
+        $tasks = Task::factory(20)->create();
+
+        $groups = TaskGroup::factory(3)->create();
+
+        foreach ($tasks as $task) {
+            $task->group_id = $groups->random()->id;
+            $task->save();
+        }
+
+        Task::factory(5)->create();
     }
 }

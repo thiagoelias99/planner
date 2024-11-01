@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaskGroup>
  */
-class TaskFactory extends Factory
+class TaskGroupFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,8 +20,7 @@ class TaskFactory extends Factory
 
         return [
             "user_id" => $userId,
-            "title" => fake()->sentence(),
-            "status"=> fake()->randomElement(['pending', 'in_progress', 'on_hold', "completed", 'deleted']),
+            "title" => fake()->sentence(3),
         ];
     }
 }

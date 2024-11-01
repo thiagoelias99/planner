@@ -13,7 +13,13 @@ class Task extends Model
 
     public $fillable = ['title', 'status', 'user_id'];
 
-    public function status(){
+    public function status()
+    {
         return $this->belongsTo(TaskStatus::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(TaskGroup::class);
     }
 }
