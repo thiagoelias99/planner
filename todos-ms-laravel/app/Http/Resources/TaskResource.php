@@ -22,6 +22,7 @@ class TaskResource extends JsonResource
             "created_at"=> $this->created_at,
             "status"=> $this->status,
             "completed_at"=> $this->completed_at,
+            "group"=> $this->group->title ?? null
         ];
     }
 }

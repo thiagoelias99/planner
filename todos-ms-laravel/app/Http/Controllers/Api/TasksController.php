@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTaskRequest;
@@ -15,7 +16,11 @@ class TasksController extends Controller
      */
     public function index(Request $request)
     {
-        return Task::orderBy('created_at', 'desc')->paginate();
+        return TaskResource::collection(
+            Task::orderBy('created_at', 'desc')
+            ->paginate()
+        );
+
     }
 
     /**
@@ -39,7 +44,7 @@ class TasksController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return new TaskResource($task);
     }
 
     /**
@@ -47,7 +52,21 @@ class TasksController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        $task->update([
+            "title" => $request->title,
+            "status" => $request->status
+        ]);
+
+        if ($task->status == "completed") {
+            $task->completed_at = now();
+        } else {
+            $task->completed_at = null;
+        }
+        $task->save();
+
+        return response()->json([
+            $task
+        ]);
     }
 
     /**
@@ -55,6 +74,8 @@ class TasksController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return response([], 204);
     }
 }

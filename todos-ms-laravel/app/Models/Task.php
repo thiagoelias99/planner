@@ -12,6 +12,7 @@ class Task extends Model
     use HasFactory, HasUuids;
 
     public $fillable = ['title', 'status', 'user_id'];
+    protected $with = ['group'];
 
     public function status()
     {
