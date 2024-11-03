@@ -2,9 +2,11 @@ import { api } from '@/lib/http-client'
 import { Paginate } from '@/models/paginate'
 import { Task } from '@/models/task'
 import { TaskGroup } from '@/models/task-group'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useTasks = () => {
+  const queryClient = useQueryClient()
+
   const { data: tasks } = useQuery({
     queryKey: ['tasks'],
     queryFn: async () => {
@@ -23,5 +25,36 @@ export const useTasks = () => {
     }
   })
 
-  return { tasks, groups }
+  const { mutateAsync: addTaskToGroup } = useMutation({
+    mutationKey: ['addTaskToGroup'],
+    mutationFn: async ({ taskId, groupId }: { taskId: string, groupId: string }) => {
+      const { status, data: updatedTask } = await api.patch<Task>(`/groups/${groupId}/addTask/${taskId}`)
+
+      console.log(taskId)
+      console.log(updatedTask)
+
+      if (status === 200) {
+        queryClient.setQueryData(['tasks'], (data: Paginate<Task>) => {
+
+          const newData = {
+            ...data,
+            data: data.data.map(task => {
+              if (task.id === taskId) {
+                return updatedTask
+              }
+              return task
+            })
+          }
+
+          console.log(newData)
+
+          return newData
+        })
+      }
+
+      return
+    }
+  })
+
+  return { tasks, groups, addTaskToGroup }
 }

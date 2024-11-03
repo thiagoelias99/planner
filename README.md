@@ -6,8 +6,8 @@
 - [ ] - Definir status de tarefas
 - [ ] - Deletar tarefas
 - [ ] - Criar grupos
-- [ ] - Adicionar tarefas em um grupo
-- [ ] - Visulização detalhada do grupo
+- [X] - Adicionar tarefas em um grupo
+- [ ] - Visualização detalhada do grupo
 - [ ] - Deletar grupo
 
 #### Upgrade

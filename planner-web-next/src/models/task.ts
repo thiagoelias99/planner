@@ -6,4 +6,5 @@ export interface Task {
   created_at: Date;
   updated_at: Date;
   status: string;
+  group?: string;
 }

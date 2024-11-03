@@ -1,10 +1,9 @@
 "use client"
 
+import GroupCard from '@/components/group-card';
+import TaskCard from '@/components/task-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { useTasks } from '@/hooks/use-tasks';
-import { formatPercentage } from '@/lib/utils';
 
 export default function Home() {
   const { tasks, groups } = useTasks();
@@ -18,10 +17,7 @@ export default function Home() {
         <CardContent>
           <ul className=''>
             {tasks?.data.map(task => (
-              <li key={task.id} className='flex items-center gap-4 hover:bg-muted rounded p-2'>
-                <Checkbox id={task.id} checked={task.status === "completed"} />
-                <Label htmlFor={task.id} className='cursor-pointer leading-relaxed tracking-wide line-clamp-2'>{task.title}</Label>
-              </li>
+              <TaskCard task={task} key={task.id} />
             ))}
           </ul>
         </CardContent>
@@ -34,12 +30,7 @@ export default function Home() {
         <CardContent>
           <ul className=''>
             {groups?.map(group => (
-              <li key={group.id} className='flex flex-col justify-start items-start hover:bg-muted rounded p-2 cursor-pointer'>
-                <h3>{group.title}</h3>
-                <div>
-                  <p>{group.tasks_completed} / {group.tasks_count} ({formatPercentage(group.completion_rate)})</p>
-                </div>
-              </li>
+              <GroupCard group={group} key={group.id} />
             ))}
           </ul>
         </CardContent>

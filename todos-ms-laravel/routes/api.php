@@ -10,4 +10,6 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 
 Route::apiResource('/tasks', TasksController::class);
+
 Route::apiResource('/groups', TaskGroupsController::class);
+Route::patch('/groups/{taskGroupId}/addTask/{taskId}', [TaskGroupsController::class, 'addTask']);
