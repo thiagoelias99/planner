@@ -41,6 +41,9 @@ export default function TaskSection() {
             <TaskCard task={task} key={task.id} />
           ))}
         </ul>
+        {tasks?.data.length === 0 && (
+          <p className='text-muted-foreground text-center'>Nenhuma tarefa cadastrada</p>
+        )}
       </CardContent>
     </Card>
   )

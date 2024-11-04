@@ -41,6 +41,9 @@ export default function GroupSection() {
             <GroupCard group={group} key={group.id} />
           ))}
         </ul>
+        {groups?.length === 0 && (
+          <p className='text-muted-foreground text-center'>Nenhum grupo cadastrado</p>
+        )}
       </CardContent>
     </Card>
   )

@@ -46,7 +46,7 @@ export default function CreateTaskForm({ onSuccessfulSubmit }: Props) {
             <FormItem className=''>
               <FormLabel>Título</FormLabel>
               <FormControl>
-                <Input type='text' {...field} />
+                <Input autoFocus type='text' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
