@@ -5,7 +5,7 @@ services:
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: planner_todo_db
+      MYSQL_DATABASE: planner_api_db
     ports:
       - "3306:3306"
     # volumes:
