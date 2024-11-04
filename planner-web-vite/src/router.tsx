@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import AuthLayout from './layouts/auth-layout';
 import HomePage from './pages/home/home.page';
 import TasksPage from './pages/tasks/tasks.page';
@@ -12,6 +12,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        element: <Navigate to='/dashboard' replace={true} />
+      },
+      {
+        path: '/dashboard',
         element: <HomePage />
       },
       {

@@ -25,7 +25,8 @@ export const useTasks = () => {
       const response = await api.get<Paginate<Task>>('/tasks')
       const data = response.data
       return data
-    }
+    },
+    staleTime: 60_000 * 10
   })
 
   const { mutateAsync: updateTask, isPending: isUpdatingTask } = useMutation({
@@ -76,7 +77,8 @@ export const useTasks = () => {
       const response = await api.get<TaskGroup[]>('/groups')
       const data = response.data
       return data
-    }
+    },
+    staleTime: 60_000 * 10
   })
 
   const { mutateAsync: addTaskToGroup } = useMutation({
