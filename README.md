@@ -3,12 +3,12 @@
 ### Módulo de Tarefas
 #### MVP
 - [X] - Cadastrar tarefa
-- [ ] - Definir status de tarefas
-- [ ] - Deletar tarefas
+- [X] - Definir status de tarefas
+- [X] - Deletar tarefas
 - [X] - Criar grupos
 - [X] - Adicionar tarefas em um grupo
 - [ ] - Visualização detalhada do grupo
-- [ ] - Deletar grupo
+- [X] - Deletar grupo
 
 #### Upgrade
 - [ ] - Definir data e hora para a tarefa

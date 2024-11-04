@@ -43,6 +43,21 @@ export const useTasks = () => {
     }
   })
 
+  const { mutateAsync: deleteTask } = useMutation({
+    mutationKey: ['deleteTask'],
+    mutationFn: async (taskId: string) => {
+      const { status } = await api.delete(`/tasks/${taskId}`)
+      if (status === 204) {
+        queryClient.invalidateQueries({
+          queryKey: ['tasks']
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['taskGroups']
+        })
+      }
+    }
+  })
+
   const { mutateAsync: createGroup, isPending: isCreatingGroup } = useMutation({
     mutationKey: ['createGroup'],
     mutationFn: async (task: TaskGroupCreateRequest) => {
@@ -82,6 +97,21 @@ export const useTasks = () => {
     }
   })
 
+  const { mutateAsync: deleteGroup } = useMutation({
+    mutationKey: ['deleteGroup'],
+    mutationFn: async (groupId: string) => {
+      const { status } = await api.delete(`/groups/${groupId}`)
+      if (status === 204) {
+        queryClient.invalidateQueries({
+          queryKey: ['tasks']
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['taskGroups']
+        })
+      }
+    }
+  })
+
   return {
     tasks,
     isLoadingTasks,
@@ -89,12 +119,14 @@ export const useTasks = () => {
     isCreatingTask,
     updateTask,
     isUpdatingTask,
+    deleteTask,
 
     groups,
     isLoadingGroups,
     createGroup,
     isCreatingGroup,
-    addTaskToGroup
+    addTaskToGroup,
+    deleteGroup
   }
 }
 

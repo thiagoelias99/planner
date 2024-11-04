@@ -62,8 +62,11 @@ class TaskGroupsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TaskGroup $taskGroup)
+    public function destroy(string $taskGroup)
     {
-        //
+        // dd($taskGroup);
+
+        TaskGroup::destroy($taskGroup);
+        return response([], 204);
     }
 }
