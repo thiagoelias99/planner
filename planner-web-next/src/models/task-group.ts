@@ -1,3 +1,5 @@
+import { Task } from './task';
+
 export interface TaskGroup {
   id: string;
   title: string;
@@ -7,4 +9,8 @@ export interface TaskGroup {
   tasks_completed: number;
   completion_rate: number;
   tasks: Task[];
+}
+
+export interface TaskGroupCreateRequest {
+  title: string;
 }

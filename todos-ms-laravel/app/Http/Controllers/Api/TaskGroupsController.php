@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AddTaskToGroupRequest;
 use App\Http\Resources\TaskGroupResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\TaskGroup;
 use App\Http\Requests\StoreTaskGroupRequest;
 use App\Http\Requests\UpdateTaskGroupRequest;
-use Request;
 
 class TaskGroupsController extends Controller
 {
@@ -27,7 +25,13 @@ class TaskGroupsController extends Controller
      */
     public function store(StoreTaskGroupRequest $request)
     {
-        //
+        $user_id = "598cdfe9-951b-4341-85d9-f9ca75394eb6";
+        $task_group = TaskGroup::create([
+            'title' => $request->title,
+            'user_id' => $user_id
+        ]);
+
+        return $this->show($task_group);
     }
 
     /**
@@ -35,7 +39,7 @@ class TaskGroupsController extends Controller
      */
     public function show(TaskGroup $taskGroup)
     {
-        //
+        return TaskGroupResource::make($taskGroup);
     }
 
     /**

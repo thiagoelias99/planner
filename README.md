@@ -5,7 +5,7 @@
 - [X] - Cadastrar tarefa
 - [ ] - Definir status de tarefas
 - [ ] - Deletar tarefas
-- [ ] - Criar grupos
+- [X] - Criar grupos
 - [X] - Adicionar tarefas em um grupo
 - [ ] - Visualização detalhada do grupo
 - [ ] - Deletar grupo

@@ -1,8 +1,8 @@
 import { Task } from '@/models/task'
 import React from 'react'
-import { Checkbox } from './ui/checkbox'
-import { Label } from './ui/label'
 import { useDraggable } from '@dnd-kit/core';
+import { Checkbox } from '../ui/checkbox';
+import { Label } from '../ui/label';
 
 interface Props {
   task: Task

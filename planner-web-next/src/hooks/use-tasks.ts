@@ -1,11 +1,23 @@
 import { api } from '@/lib/http-client'
 import { Paginate } from '@/models/paginate'
-import { Task } from '@/models/task'
-import { TaskGroup } from '@/models/task-group'
+import { Task, TaskCreateRequest } from '@/models/task'
+import { TaskGroup, TaskGroupCreateRequest } from '@/models/task-group'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useTasks = () => {
   const queryClient = useQueryClient()
+
+  const { mutateAsync: createTask, isPending: isCreatingTask } = useMutation({
+    mutationKey: ['createTask'],
+    mutationFn: async (task: TaskCreateRequest) => {
+      const { status } = await api.post<Task>('/tasks', task)
+      if (status === 201 || status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ['tasks']
+        })
+      }
+    }
+  })
 
   const { data: tasks } = useQuery({
     queryKey: ['tasks'],
@@ -13,6 +25,18 @@ export const useTasks = () => {
       const response = await api.get<Paginate<Task>>('/tasks')
       const data = response.data
       return data
+    }
+  })
+
+  const { mutateAsync: createGroup, isPending: isCreatingGroup } = useMutation({
+    mutationKey: ['createGroup'],
+    mutationFn: async (task: TaskGroupCreateRequest) => {
+      const { status } = await api.post<TaskGroup>('/groups', task)
+      if (status === 201 || status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ['taskGroups']
+        })
+      }
     }
   })
 
@@ -56,5 +80,5 @@ export const useTasks = () => {
     }
   })
 
-  return { tasks, groups, addTaskToGroup }
+  return { tasks, createTask, isCreatingTask, groups, createGroup, isCreatingGroup, addTaskToGroup }
 }

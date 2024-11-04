@@ -8,3 +8,8 @@ export interface Task {
   status: string;
   group?: string;
 }
+
+export interface TaskCreateRequest {
+  title: string;
+  group_id?: string;
+}
