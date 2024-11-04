@@ -19,12 +19,27 @@ export const useTasks = () => {
     }
   })
 
-  const { data: tasks } = useQuery({
+  const { data: tasks, isPending: isLoadingTasks } = useQuery({
     queryKey: ['tasks'],
     queryFn: async () => {
       const response = await api.get<Paginate<Task>>('/tasks')
       const data = response.data
       return data
+    }
+  })
+
+  const { mutateAsync: updateTask, isPending: isUpdatingTask } = useMutation({
+    mutationKey: ['updateTask'],
+    mutationFn: async (task: Task) => {
+      const { status } = await api.patch<Task>(`/tasks/${task.id}`, task)
+      if (status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ['tasks']
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['taskGroups']
+        })
+      }
     }
   })
 
@@ -40,7 +55,7 @@ export const useTasks = () => {
     }
   })
 
-  const { data: groups } = useQuery({
+  const { data: groups, isPending: isLoadingGroups } = useQuery({
     queryKey: ['taskGroups'],
     queryFn: async () => {
       const response = await api.get<TaskGroup[]>('/groups')
@@ -54,25 +69,12 @@ export const useTasks = () => {
     mutationFn: async ({ taskId, groupId }: { taskId: string, groupId: string }) => {
       const { status, data: updatedTask } = await api.patch<Task>(`/groups/${groupId}/addTask/${taskId}`)
 
-      console.log(taskId)
-      console.log(updatedTask)
-
       if (status === 200) {
         queryClient.setQueryData(['tasks'], (data: Paginate<Task>) => {
-
-          const newData = {
-            ...data,
-            data: data.data.map(task => {
-              if (task.id === taskId) {
-                return updatedTask
-              }
-              return task
-            })
-          }
-
-          console.log(newData)
-
-          return newData
+          return updateDataWithTask(data, taskId, updatedTask)
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['taskGroups']
         })
       }
 
@@ -80,5 +82,30 @@ export const useTasks = () => {
     }
   })
 
-  return { tasks, createTask, isCreatingTask, groups, createGroup, isCreatingGroup, addTaskToGroup }
+  return {
+    tasks,
+    isLoadingTasks,
+    createTask,
+    isCreatingTask,
+    updateTask,
+    isUpdatingTask,
+
+    groups,
+    isLoadingGroups,
+    createGroup,
+    isCreatingGroup,
+    addTaskToGroup
+  }
+}
+
+function updateDataWithTask(data: Paginate<Task>, taskId: string, updatedTask: Task) {
+  return {
+    ...data,
+    data: data.data.map(task => {
+      if (task.id === taskId) {
+        return updatedTask
+      }
+      return task
+    })
+  }
 }

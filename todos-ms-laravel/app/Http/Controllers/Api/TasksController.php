@@ -18,7 +18,7 @@ class TasksController extends Controller
     {
         return TaskResource::collection(
             Task::orderBy('created_at', 'desc')
-            ->paginate()
+            ->paginate(100)
         );
 
     }
