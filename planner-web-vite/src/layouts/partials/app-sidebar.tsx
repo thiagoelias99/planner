@@ -6,12 +6,13 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 import { FaListCheck } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const items = [
   {
@@ -28,6 +29,13 @@ const items = [
 
 export function AppSidebar() {
   const currentPath = useLocation().pathname;
+  const { setOpenMobile } = useSidebar();
+  const navigate = useNavigate()
+
+  function handleMenuClick(url: string) {
+    setOpenMobile(false);
+    navigate(url);
+  }
 
   return (
     <Sidebar collapsible='icon'>
@@ -37,11 +45,15 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={currentPath.startsWith(item.url)}>
-                    <Link to={item.url}>
+                  <SidebarMenuButton
+                    isActive={currentPath.startsWith(item.url)}
+                    onClick={() => handleMenuClick(item.url)}
+                    className='py-5'
+                  >
+                    <div className='flex justify-start items-center gap-4'>
                       <item.icon />
                       <span>{item.title}</span>
-                    </Link>
+                    </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

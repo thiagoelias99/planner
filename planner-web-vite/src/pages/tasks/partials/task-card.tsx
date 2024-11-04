@@ -60,7 +60,12 @@ export default function TaskCard({ task }: Props) {
         </li>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>Editar</ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => {
+            console.log('Edit task', task)
+          }}
+
+        >Editar 2</ContextMenuItem>
         <ContextMenuItem
           onClick={handleDelete}
           className='text-destructive gap-2'

@@ -5,7 +5,6 @@ import { queryClient } from './lib/query-client'
 import { SidebarProvider } from './components/ui/sidebar'
 
 function App() {
-
   return (
     <QueryClientProvider client={queryClient}>
       <SidebarProvider defaultOpen={false}>

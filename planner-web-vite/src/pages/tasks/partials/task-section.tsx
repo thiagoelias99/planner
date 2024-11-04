@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { PlusIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SheetTrigger, SheetContent, SheetHeader, SheetTitle, Sheet } from '@/components/ui/sheet'
@@ -8,6 +8,7 @@ import TaskCard from './task-card'
 import { useTasks } from '@/hooks/use-tasks'
 import CreateTaskForm from './create-task-form'
 import { useState } from 'react'
+import { H2 } from '@/components/ui/typography'
 
 export default function TaskSection() {
   const { tasks } = useTasks();
@@ -19,8 +20,8 @@ export default function TaskSection() {
 
   return (
     <Card className='w-full max-w-screen-sm'>
-      <CardHeader className='flex flex-row justify-between items-baseline'>
-        <CardTitle>Minhas Tarefas</CardTitle>
+      <CardHeader className='flex flex-row justify-between items-baseline pt-2'>
+        <H2>Minhas Tarefas</H2>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button size="icon" variant="secondary">
