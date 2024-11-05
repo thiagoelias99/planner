@@ -4,6 +4,7 @@ import HomePage from './pages/home/home.page';
 import TasksPage from './pages/tasks/tasks.page';
 import NotFoundPage from './pages/not-found/not-found.page';
 import TasksProvider from './providers/tasks-provider';
+import TaskGroupDetailsPage from './pages/tasks/group-details.page';
 
 const router = createBrowserRouter([
   {
@@ -23,8 +24,12 @@ const router = createBrowserRouter([
         element:
           <TasksProvider>
             <TasksPage />
-          </TasksProvider>
+          </TasksProvider>,
       },
+      {
+        path: '/tasks/groups/:groupId',
+        element: <TaskGroupDetailsPage />
+      }
     ]
   },
   {

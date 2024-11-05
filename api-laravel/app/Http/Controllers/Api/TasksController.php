@@ -31,7 +31,8 @@ class TasksController extends Controller
         $task = Task::create([
             "title" => $request->title,
             "status" => "pending",
-            "user_id" => "598cdfe9-951b-4341-85d9-f9ca75394eb6"
+            "user_id" => "598cdfe9-951b-4341-85d9-f9ca75394eb6",
+            "group_id" => $request->group_id
         ]);
 
         return response()->json([

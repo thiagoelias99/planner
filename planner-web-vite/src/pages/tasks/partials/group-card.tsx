@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/context-menu"
 import { Trash2Icon } from 'lucide-react';
 import { useTasks } from '@/hooks/use-tasks';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   group: TaskGroup
@@ -21,9 +22,14 @@ export default function GroupCard({ group }: Props) {
   });
 
   const { deleteGroup } = useTasks();
+  const navigate = useNavigate()
 
   async function handleDelete() {
     await deleteGroup(group.id)
+  }
+
+  function handleClick() {
+    navigate(`/tasks/groups/${group.id}`)
   }
 
   return (
@@ -32,6 +38,7 @@ export default function GroupCard({ group }: Props) {
         <li
           key={group.id}
           ref={setNodeRef}
+          onClick={handleClick}
           className={cn('flex flex-col justify-start items-start hover:bg-muted rounded p-2 cursor-pointer', isOver && "bg-green-500")}>
           <h3>{group.title}</h3>
           <div>

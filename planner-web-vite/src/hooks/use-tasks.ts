@@ -15,6 +15,9 @@ export const useTasks = () => {
         queryClient.invalidateQueries({
           queryKey: ['tasks']
         })
+        queryClient.invalidateQueries({
+          queryKey: ['taskGroups']
+        })
       }
     }
   })

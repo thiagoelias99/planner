@@ -12,15 +12,22 @@ import {
 } from "@/components/ui/dialog"
 
 import TaskCard from './task-card'
-import { useTasks } from '@/hooks/use-tasks'
 import CreateTaskForm from './create-task-form'
 import { useState } from 'react'
 import { H2 } from '@/components/ui/typography'
 import { Task } from '@/models/task'
 import EditTaskForm from './edit-task-form'
+import { ClassNameValue } from 'tailwind-merge'
+import { cn } from '@/lib/utils'
 
-export default function TaskSection() {
-  const { tasks } = useTasks();
+interface Props {
+  tasks: Task[] | undefined | null
+  header?: string
+  className?: ClassNameValue
+  groupId?: string
+}
+
+export default function TaskSection({ tasks, header = 'Minhas Tarefas', className, groupId }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -30,9 +37,9 @@ export default function TaskSection() {
   }
 
   return (
-    <Card className='w-full max-w-screen-sm'>
+    <Card className={cn('w-full', className)}>
       <CardHeader className='flex flex-row justify-between items-baseline pt-2'>
-        <H2>Minhas Tarefas</H2>
+        <H2>{header}</H2>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button size="icon" variant="secondary">
@@ -43,7 +50,7 @@ export default function TaskSection() {
             <SheetHeader>
               <SheetTitle>Adicionar nova tarefa</SheetTitle>
             </SheetHeader>
-            <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} />
+            <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} groupId={groupId} />
           </SheetContent>
         </Sheet>
       </CardHeader>
@@ -51,11 +58,11 @@ export default function TaskSection() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 
           <ul className=''>
-            {tasks?.data.map(task => (
+            {tasks?.map(task => (
               <TaskCard task={task} setTask={setSelectedTask} key={task.id} />
             ))}
           </ul>
-          {tasks?.data.length === 0 && (
+          {tasks?.length === 0 && (
             <p className='text-muted-foreground text-center'>Nenhuma tarefa cadastrada</p>
           )}
 

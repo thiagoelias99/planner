@@ -8,9 +8,10 @@ import { useTasks } from '@/hooks/use-tasks'
 
 interface Props {
   onSuccessfulSubmit?: () => void
+  groupId?: string
 }
 
-export default function CreateTaskForm({ onSuccessfulSubmit }: Props) {
+export default function CreateTaskForm({ onSuccessfulSubmit, groupId }: Props) {
   const formSchema = z.object({
     title: z.string().min(3).max(255),
   })
@@ -25,7 +26,7 @@ export default function CreateTaskForm({ onSuccessfulSubmit }: Props) {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createTask(values)
+    await createTask({ group_id: groupId, ...values })
     form.reset()
     if (onSuccessfulSubmit) { onSuccessfulSubmit() }
   }

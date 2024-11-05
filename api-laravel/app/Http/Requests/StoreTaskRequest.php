@@ -32,6 +32,7 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             "title" => ["required", "string"],
+            "group_id" => ["exists:task_groups,id"],
         ];
     }
 }
