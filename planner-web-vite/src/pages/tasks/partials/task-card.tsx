@@ -12,12 +12,14 @@ import {
 import { Trash2Icon } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { DialogTrigger } from '@/components/ui/dialog';
 
 interface Props {
   task: Task
+  setTask: (task: Task) => void
 }
 
-export default function TaskCard({ task }: Props) {
+export default function TaskCard({ task, setTask }: Props) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task.id,
   });
@@ -60,12 +62,13 @@ export default function TaskCard({ task }: Props) {
         </li>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem
-          onClick={() => {
-            console.log('Edit task', task)
-          }}
-
-        >Editar 2</ContextMenuItem>
+        <DialogTrigger asChild>
+          <ContextMenuItem
+            onClick={() => {
+              setTask(task)
+            }}
+          >Editar</ContextMenuItem>
+        </DialogTrigger>
         <ContextMenuItem
           onClick={handleDelete}
           className='text-destructive gap-2'

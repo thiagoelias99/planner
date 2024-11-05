@@ -1,6 +1,6 @@
 import { api } from '@/lib/http-client'
 import { Paginate } from '@/models/paginate'
-import { Task, TaskCreateRequest } from '@/models/task'
+import { Task, TaskCreateRequest, TaskUpdateRequest } from '@/models/task'
 import { TaskGroup, TaskGroupCreateRequest } from '@/models/task-group'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -31,8 +31,8 @@ export const useTasks = () => {
 
   const { mutateAsync: updateTask, isPending: isUpdatingTask } = useMutation({
     mutationKey: ['updateTask'],
-    mutationFn: async (task: Task) => {
-      const { status } = await api.patch<Task>(`/tasks/${task.id}`, task)
+    mutationFn: async (data: TaskUpdateRequest) => {
+      const { status } = await api.patch<Task>(`/tasks/${data.id}`, data)
       if (status === 200) {
         queryClient.invalidateQueries({
           queryKey: ['tasks']

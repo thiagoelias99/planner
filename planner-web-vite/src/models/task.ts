@@ -13,3 +13,10 @@ export interface TaskCreateRequest {
   title: string;
   group_id?: string;
 }
+
+export interface TaskUpdateRequest {
+  id: string
+  title: string;
+  status: string;
+  group_id?: string;
+}

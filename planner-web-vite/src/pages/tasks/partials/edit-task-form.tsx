@@ -5,29 +5,32 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { useTasks } from '@/hooks/use-tasks'
+import { Task } from '@/models/task'
 
 interface Props {
-  onSuccessfulSubmit?: () => void
+  task: Task | null
+  onSuccessful?: () => void
 }
 
-export default function CreateTaskForm({ onSuccessfulSubmit }: Props) {
+export default function EditTaskForm({ task, onSuccessful }: Props) {
   const formSchema = z.object({
     title: z.string().min(3).max(255),
   })
 
-  const { createTask, isCreatingTask } = useTasks();
+  const { updateTask, isUpdatingTask } = useTasks();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      title: task?.title || '',
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createTask(values)
+    if (!task) { return }
+    await updateTask({ id: task.id, status: task.status, ...values })
     form.reset()
-    if (onSuccessfulSubmit) { onSuccessfulSubmit() }
+    if (onSuccessful) { onSuccessful() }
   }
 
   return (
@@ -49,8 +52,8 @@ export default function CreateTaskForm({ onSuccessfulSubmit }: Props) {
         <Button
           type='submit'
           className='w-full mt-4'
-          isLoading={isCreatingTask}
-        >Adicionar</Button>
+          isLoading={isUpdatingTask}
+        >Salvar</Button>
       </form>
     </Form>
   )
