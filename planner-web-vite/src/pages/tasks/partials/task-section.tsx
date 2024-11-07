@@ -25,9 +25,12 @@ interface Props {
   header?: string
   className?: ClassNameValue
   groupId?: string
+  hideAddButton?: boolean
+  hideCounter?: boolean
+  maxItems?: number
 }
 
-export default function TaskSection({ tasks, header = 'Minhas Tarefas', className, groupId }: Props) {
+export default function TaskSection({ tasks, header = 'Minhas Tarefas', className, groupId, hideAddButton, hideCounter, maxItems }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -38,14 +41,21 @@ export default function TaskSection({ tasks, header = 'Minhas Tarefas', classNam
 
   return (
     <Card className={cn('w-full', className)}>
-      <CardHeader className='flex flex-row justify-between items-baseline pt-2'>
-        <H2>{header}</H2>
+      <CardHeader className='flex flex-row justify-between items-baseline pt-4'>
+        <div className='flex gap-2 justify-start items-baseline'>
+          <H2>{header}</H2>
+          {!hideCounter && (
+            <p className='text-muted-foreground'><strong className='text-2xl text-muted-foreground'>{tasks?.filter(task => task.status === "completed").length}</strong>/{tasks?.length}</p>
+          )}
+        </div>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <SheetTrigger asChild>
-            <Button size="icon" variant="secondary">
-              <PlusIcon />
-            </Button>
-          </SheetTrigger>
+          {!hideAddButton && (
+            <SheetTrigger asChild>
+              <Button size="icon" variant="secondary">
+                <PlusIcon />
+              </Button>
+            </SheetTrigger>
+          )}
           <SheetContent>
             <SheetHeader>
               <SheetTitle>Adicionar nova tarefa</SheetTitle>
@@ -58,9 +68,12 @@ export default function TaskSection({ tasks, header = 'Minhas Tarefas', classNam
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 
           <ul className=''>
-            {tasks?.map(task => (
-              <TaskCard task={task} setTask={setSelectedTask} key={task.id} />
-            ))}
+            {tasks?.map((task, index) => {
+              if (maxItems && index >= maxItems) return null
+              return (
+                <TaskCard task={task} setTask={setSelectedTask} key={task.id} />
+              )
+            })}
           </ul>
           {tasks?.length === 0 && (
             <p className='text-muted-foreground text-center'>Nenhuma tarefa cadastrada</p>

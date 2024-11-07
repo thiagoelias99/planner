@@ -7,8 +7,14 @@ import { SheetTrigger, SheetContent, SheetHeader, SheetTitle, Sheet } from '@/co
 import GroupCard from './group-card'
 import { useTasks } from '@/hooks/use-tasks'
 import CreateTaskGroupForm from './create-task-group-form'
+import { ClassNameValue } from 'tailwind-merge'
+import { cn } from '@/lib/utils'
 
-export default function GroupSection() {
+interface Props {
+  className?: ClassNameValue
+}
+
+export default function GroupSection({ className }: Props) {
   const { groups } = useTasks();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -17,7 +23,7 @@ export default function GroupSection() {
   }
 
   return (
-    <Card className='w-full sm:max-w-[296px]'>
+    <Card className={cn('w-full sm:max-w-[296px]', className)}>
       <CardHeader className='flex flex-row justify-between items-baseline'>
         <CardTitle>Grupos</CardTitle>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>

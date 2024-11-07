@@ -42,7 +42,7 @@ export default function TaskCard({ task, setTask }: Props) {
       <ContextMenuTrigger asChild>
         <li
           key={task.id}
-          className='flex items-center gap-4 hover:bg-muted rounded p-2'
+          className='flex justify-start items-center gap-4 hover:bg-muted rounded p-2'
         >
           <Checkbox
             id={task.id}
@@ -53,10 +53,10 @@ export default function TaskCard({ task, setTask }: Props) {
             ref={setNodeRef}
             {...listeners}
             {...attributes}
-            className='cursor-grab'
+            className='cursor-grab min-h-[44px] flex flex-col justify-center items-start gap-1'
             style={style}
           >
-            <Label htmlFor={task.id} className='cursor-pointer leading-relaxed tracking-wide line-clamp-2'>{task.title}</Label>
+            <Label htmlFor={task.id} className='cursor-pointer leading-relaxed tracking-wide line-clamp-1'>{task.title}</Label>
             <span className='text-xs text-muted-foreground'>{task.group}</span>
           </div>
         </li>
