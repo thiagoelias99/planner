@@ -11,10 +11,11 @@ import { ClassNameValue } from 'tailwind-merge'
 import { cn } from '@/lib/utils'
 
 interface Props {
+  header?: string
   className?: ClassNameValue
 }
 
-export default function GroupSection({ className }: Props) {
+export default function GroupSection({ className, header = "Grupos" }: Props) {
   const { groups } = useTasks();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -25,7 +26,7 @@ export default function GroupSection({ className }: Props) {
   return (
     <Card className={cn('w-full sm:max-w-[296px]', className)}>
       <CardHeader className='flex flex-row justify-between items-baseline'>
-        <CardTitle>Grupos</CardTitle>
+        <CardTitle>{header}</CardTitle>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button size="icon" variant="secondary">

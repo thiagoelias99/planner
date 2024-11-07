@@ -1,4 +1,4 @@
-import { cn, formatPercentage } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { TaskGroup } from '@/models/task-group'
 import { useDroppable } from '@dnd-kit/core';
 
@@ -11,6 +11,8 @@ import {
 import { Trash2Icon } from 'lucide-react';
 import { useTasks } from '@/hooks/use-tasks';
 import { useNavigate } from 'react-router-dom';
+import { Progress } from "@/components/ui/progress"
+
 
 interface Props {
   group: TaskGroup
@@ -39,10 +41,11 @@ export default function GroupCard({ group }: Props) {
           key={group.id}
           ref={setNodeRef}
           onClick={handleClick}
-          className={cn('flex flex-col justify-start items-start hover:bg-muted rounded p-2 cursor-pointer', isOver && "bg-green-500")}>
-          <h3>{group.title}</h3>
-          <div>
-            <p>{group.tasks_completed} / {group.tasks_count} ({formatPercentage(group.completion_rate)})</p>
+          className={cn('flex flex-col justify-start items-start hover:bg-muted rounded p-2 py-3 cursor-pointer gap-1', isOver && "bg-green-500")}>
+          <Progress value={group.completion_rate * 100} className='h-1' />
+          <div className='flex justify-between items-start w-full'>
+            <h3>{group.title}</h3>
+            <span className='text-muted-foreground ml-1'>{(group.completion_rate * 100).toFixed(0)}%</span>
           </div>
         </li>
       </ContextMenuTrigger>
