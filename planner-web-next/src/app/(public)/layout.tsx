@@ -1,7 +1,14 @@
 import React, { PropsWithChildren } from 'react'
 import Image from 'next/image'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { redirect } from 'next/navigation';
 
-export default function PublicLayout({ children }: PropsWithChildren) {
+export default async function PublicLayout({ children }: PropsWithChildren) {
+  const { isAuthenticated } = getKindeServerSession();
+  const isLoggedIn = await isAuthenticated();
+
+  if (isLoggedIn) { redirect('/') }
+
   return (
     <main className='flex flex-row max-w-screen-2xl w-full h-screen p-10'>
       <div className='w-3/5 relative rounded-2xl'>
