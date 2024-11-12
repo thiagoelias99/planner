@@ -7,7 +7,7 @@ export default async function PublicLayout({ children }: PropsWithChildren) {
   const { isAuthenticated } = getKindeServerSession()
   const isLoggedIn = await isAuthenticated()
 
-  if (isLoggedIn) { redirect("/") }
+  if (isLoggedIn) { redirect("/dashboard") }
 
   return (
     <main className='flex flex-row max-w-screen-2xl w-full h-screen p-10'>
