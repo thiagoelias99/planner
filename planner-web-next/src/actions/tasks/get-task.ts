@@ -12,6 +12,9 @@ export async function getTasksAction(): Promise<string> {
           id: true
         }
       }
+    },
+    orderBy: {
+      createdAt: "asc"
     }
   })
 

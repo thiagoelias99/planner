@@ -1,18 +1,41 @@
 import { Prisma, TaskStatus } from "@prisma/client"
 
-export class Task {
-  public readonly id: string
-  public readonly title: string
-  public readonly status: TaskStatus
-  public readonly listId: string
-  public readonly listTitle: string
+export interface ITask {
+  id: string
+  title: string
+  status: TaskStatus
+  listId: string
+  listTitle: string
+  completedAt?: Date | null
+  createdAt: Date
+  updatedAt: Date
+}
 
-  public readonly completedAt?: Date | null
+export class Task implements ITask {
+  public readonly id: string
+  public title: string
+  public status: TaskStatus
+  public listId: string
+  public listTitle: string
+
+  public completedAt?: Date | null
   public readonly createdAt: Date
   public readonly updatedAt: Date
 
-  constructor(data: Task) {
+  constructor(data: ITask) {
     Object.assign(this, data)
+  }
+
+  public toggleStatus(): TaskStatus {
+    if (this.status === TaskStatus.DONE) {
+      this.status = TaskStatus.PENDING
+      this.completedAt = null
+    } else {
+      this.status = TaskStatus.DONE
+      this.completedAt = new Date()
+    }
+
+    return this.status
   }
 
   static fromPrisma(data: Prisma.TaskGetPayload<{
@@ -41,4 +64,10 @@ export class Task {
 export interface CreateTaskDto {
   title: string
   listId?: string
+}
+
+export interface UpdateTaskDto extends Partial<CreateTaskDto> {
+  id: string
+  status?: TaskStatus
+  completedAt?: Date | null
 }

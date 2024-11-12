@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { DialogTrigger } from "@/components/ui/dialog"
 import { TaskStatus } from "@prisma/client"
 import { Task } from "@/models/task"
+import { useTasks } from "@/hooks/use-tasks"
 
 interface Props {
   task: Task
@@ -25,12 +26,28 @@ export default function TaskCard({ task, setTask }: Props) {
     id: task.id,
   })
 
+  const { updateTask, deleteTask } = useTasks()
+
+  // const task = new Task({
+  //   id: "1",
+  //   title: "Tarefa de exemplo",
+  //   status: TaskStatus.PENDING,
+  //   listId: "list-1",
+  //   listTitle: "Lista de exemplo",
+  //   completedAt: null,
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  // })
+
+  // console.log(task2)
+
   async function handleCheckedChange() {
-    // await updateTask({ ...task, status: task.status === "completed" ? "pending" : "completed" })
+    task.toggleStatus()
+    await updateTask({ ...task })
   }
 
   async function handleDelete() {
-    // await deleteTask(task.id)
+    await deleteTask(task.id)
   }
 
   const style = transform ? {

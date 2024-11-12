@@ -1,7 +1,9 @@
 // import { Task, TaskCreateRequest, TaskUpdateRequest } from "@/models/task"
 // import { TaskGroup, TaskGroupCreateRequest } from "@/models/task-group"
 import { createTaskAction, getTasksAction } from "@/actions/tasks"
-import { CreateTaskDto, Task } from "@/models/task"
+import { deleteTaskAction } from "@/actions/tasks/delete-task"
+import { updateTaskAction } from "@/actions/tasks/update-task"
+import { CreateTaskDto, ITask, Task, UpdateTaskDto } from "@/models/task"
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -31,40 +33,43 @@ export const useTasks = () => {
     queryKey: ["tasks"],
     queryFn: async () => {
       const data = await getTasksAction()
-      return JSON.parse(data) as Task[]
+      const parsedData = JSON.parse(data) as ITask[]
+
+      return parsedData.map(task => new Task(task))
     },
     staleTime: 60_000 * 10
   })
 
-  // const { mutateAsync: updateTask, isPending: isUpdatingTask } = useMutation({
-  //   mutationKey: ["updateTask"],
-  //   mutationFn: async (data: TaskUpdateRequest) => {
-  //     const { status } = await api.patch<Task>(`/tasks/${data.id}`, data)
-  //     if (status === 200) {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["tasks"]
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["taskGroups"]
-  //       })
-  //     }
-  //   }
-  // })
+  const { mutateAsync: updateTask, isPending: isUpdatingTask } = useMutation({
+    mutationKey: ["updateTask"],
+    mutationFn: async (data: UpdateTaskDto) => {
+      const task = await updateTaskAction(data)
+      const parsedTask = JSON.parse(task) as ITask
 
-  // const { mutateAsync: deleteTask } = useMutation({
-  //   mutationKey: ["deleteTask"],
-  //   mutationFn: async (taskId: string) => {
-  //     const { status } = await api.delete(`/tasks/${taskId}`)
-  //     if (status === 204) {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["tasks"]
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["taskGroups"]
-  //       })
-  //     }
-  //   }
-  // })
+      queryClient.setQueryData(["tasks"], (data: Task[]) => {
+        return replaceTask(data, new Task(parsedTask))
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ["taskGroups"]
+      })
+    }
+  })
+
+  const { mutateAsync: deleteTask } = useMutation({
+    mutationKey: ["deleteTask"],
+    mutationFn: async (taskId: string) => {
+
+      await deleteTaskAction(taskId)
+
+      queryClient.invalidateQueries({
+        queryKey: ["tasks"]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["taskGroups"]
+      })
+    }
+  })
 
   // const { mutateAsync: createGroup, isPending: isCreatingGroup } = useMutation({
   //   mutationKey: ["createGroup"],
@@ -126,9 +131,9 @@ export const useTasks = () => {
     isLoadingTasks,
     createTask,
     isCreatingTask,
-    // updateTask,
-    // isUpdatingTask,
-    // deleteTask,
+    updateTask,
+    isUpdatingTask,
+    deleteTask,
 
     // groups,
     // isLoadingGroups,
@@ -150,3 +155,12 @@ export const useTasks = () => {
 //     })
 //   }
 // }
+
+function replaceTask(data: Task[], task: Task): Task[] {
+  return data.map(taskItem => {
+    if (taskItem.id === task.id) {
+      return task
+    }
+    return taskItem
+  })
+}

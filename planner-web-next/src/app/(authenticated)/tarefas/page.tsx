@@ -11,8 +11,6 @@ import { useTasks } from "@/hooks/use-tasks"
 export default function TarefasPage() {
   const { tasks } = useTasks()
 
-  console.log(tasks)
-
   return (
     <TasksProvider>
       <div className='py-4 max-w-screen-xl mx-auto'>
