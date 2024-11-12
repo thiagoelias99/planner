@@ -18,7 +18,8 @@ import { H2 } from "@/components/ui/typography"
 import EditTaskForm from "./edit-task-form"
 import { ClassNameValue } from "tailwind-merge"
 import { cn } from "@/lib/utils"
-import { Task, TaskStatus } from "@prisma/client"
+import { TaskStatus } from "@prisma/client"
+import { Task } from "@/models/task"
 
 interface Props {
   tasks: Task[] | undefined | null
@@ -60,7 +61,7 @@ export default function TaskSection({ tasks, header = "Minhas Tarefas", classNam
             <SheetHeader>
               <SheetTitle>Adicionar nova tarefa</SheetTitle>
             </SheetHeader>
-            <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} groupId={groupId} />
+            <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} listId={groupId} />
           </SheetContent>
         </Sheet>
       </CardHeader>

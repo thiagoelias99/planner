@@ -1,12 +1,17 @@
+"use client"
+
 import { H1 } from "@/components/ui/typography"
 import TaskProgressCard from "./partials/task-progress-card"
 import { Task } from "@prisma/client"
 import TaskSection from "./partials/task-section"
 import TaskListSection from "./partials/task-list-section"
 import TasksProvider from "@/contexts/task-context"
+import { useTasks } from "@/hooks/use-tasks"
 
 export default function TarefasPage() {
-  const tasks: Task[] = []
+  const { tasks } = useTasks()
+
+  console.log(tasks)
 
   return (
     <TasksProvider>

@@ -4,7 +4,7 @@ import { z } from "@/lib/pt-zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { Task } from "@prisma/client"
+import { Task } from "@/models/task"
 
 interface Props {
   task: Task | null

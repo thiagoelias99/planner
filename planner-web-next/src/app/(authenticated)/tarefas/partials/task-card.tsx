@@ -12,7 +12,8 @@ import { Trash2Icon } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { DialogTrigger } from "@/components/ui/dialog"
-import { Task, TaskStatus } from "@prisma/client"
+import { TaskStatus } from "@prisma/client"
+import { Task } from "@/models/task"
 
 interface Props {
   task: Task
@@ -56,7 +57,7 @@ export default function TaskCard({ task, setTask }: Props) {
             style={style}
           >
             <Label htmlFor={task.id} className='cursor-pointer leading-relaxed tracking-wide line-clamp-1'>{task.title}</Label>
-            <span className='text-xs text-muted-foreground'>{task.title}</span>
+            <span className='text-xs text-muted-foreground'>{task.listTitle}</span>
           </div>
         </li>
       </ContextMenuTrigger>

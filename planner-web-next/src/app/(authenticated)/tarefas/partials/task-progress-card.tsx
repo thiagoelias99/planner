@@ -7,7 +7,8 @@ import { useEffect, useState } from "react"
 import { ClassNameValue } from "tailwind-merge"
 import { format } from "date-fns"
 import CountUp from "react-countup"
-import { Task, TaskStatus } from "@prisma/client"
+import { TaskStatus } from "@prisma/client"
+import { Task } from "@/models/task"
 
 interface Props {
   header?: string
