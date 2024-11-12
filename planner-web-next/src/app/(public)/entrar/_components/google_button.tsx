@@ -1,19 +1,19 @@
 "use client"
 
-import { buttonVariants } from '@/components/ui/button';
-import { LoginLink } from '@kinde-oss/kinde-auth-nextjs';
-import Image from "next/image";
+import { buttonVariants } from "@/components/ui/button"
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs"
+import Image from "next/image"
 
 export default function GoogleButton() {
   return (
     <LoginLink
       className={buttonVariants({
-        variant: 'secondary',
-        size: 'lg',
-        className: 'w-full',
+        variant: "secondary",
+        size: "lg",
+        className: "w-full",
       })}
       authUrlParams={{
-        lang: 'pt-BR',
+        lang: "pt-BR",
       }}
     >
 

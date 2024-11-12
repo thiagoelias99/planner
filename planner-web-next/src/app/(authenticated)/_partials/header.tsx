@@ -1,6 +1,6 @@
-import React from 'react'
-import { SidebarTrigger } from '@/components/ui/sidebar'
-import UserButton from './user-button'
+import React from "react"
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import UserButton from "./user-button"
 
 export default function AppHeader() {
   return (

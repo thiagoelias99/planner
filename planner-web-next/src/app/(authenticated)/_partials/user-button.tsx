@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React from "react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
 
 
 export default function UserButton() {

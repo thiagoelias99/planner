@@ -1,14 +1,14 @@
-'use client'
+"use client"
 
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { z } from '@/lib/pt-zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
-import GitHubButton from './_components/github_button'
-import GoogleButton from './_components/google_button'
-import Image from 'next/image'
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { z } from "@/lib/pt-zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
+import GitHubButton from "./_components/github_button"
+import GoogleButton from "./_components/google_button"
+import Image from "next/image"
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -18,7 +18,7 @@ export default function EntrarPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      email: "",
     },
   })
 
