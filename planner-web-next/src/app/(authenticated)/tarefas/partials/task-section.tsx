@@ -42,28 +42,28 @@ export default function TaskSection({ tasks, header = "Minhas Tarefas", classNam
 
   return (
     <Card className={cn("w-full", className)}>
-      <CardHeader className='flex flex-row justify-between items-baseline pt-4'>
+      <CardHeader className='flex flex-row justify-between'>
         <div className='flex gap-2 justify-start items-baseline'>
           <H2>{header}</H2>
           {!hideCounter && (
             <p className='text-muted-foreground'><strong className='text-2xl text-muted-foreground'>{tasks?.filter(task => task.status === TaskStatus.DONE).length}</strong>/{tasks?.length}</p>
           )}
         </div>
-        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          {!hideAddButton && (
+        {!hideAddButton && (
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button size="icon" variant="secondary">
                 <PlusIcon />
               </Button>
             </SheetTrigger>
-          )}
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Adicionar nova tarefa</SheetTitle>
-            </SheetHeader>
-            <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} listId={groupId} />
-          </SheetContent>
-        </Sheet>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Adicionar nova tarefa</SheetTitle>
+              </SheetHeader>
+              <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} listId={groupId} />
+            </SheetContent>
+          </Sheet>
+        )}
       </CardHeader>
       <CardContent>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

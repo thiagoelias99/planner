@@ -7,19 +7,19 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { SheetTrigger, SheetContent, SheetHeader, SheetTitle, Sheet } from "@/components/ui/sheet"
 import GroupCard from "./task-list-card"
-import CreateTaskGroupForm from "./create-task-group-form"
+import CreateTaskListForm from "./create-task-list-form"
 import { ClassNameValue } from "tailwind-merge"
 import { cn } from "@/lib/utils"
-import { TaskList } from "@prisma/client"
+import { TaskList } from "@/models/task-list"
 
 interface Props {
+  lists?: TaskList[]
   header?: string
   className?: ClassNameValue
 }
 
-export default function TaskListSection({ className, header = "Listas" }: Props) {
+export default function TaskListSection({ lists = [], className, header = "Listas" }: Props) {
   // const { groups } = useTasks();
-  const lists: TaskList[] = []
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   function onSuccessfulSubmit() {
@@ -28,7 +28,7 @@ export default function TaskListSection({ className, header = "Listas" }: Props)
 
   return (
     <Card className={cn("w-full sm:max-w-[296px]", className)}>
-      <CardHeader className='flex flex-row justify-between items-baseline'>
+      <CardHeader className='flex flex-row justify-between'>
         <CardTitle>{header}</CardTitle>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
@@ -40,7 +40,7 @@ export default function TaskListSection({ className, header = "Listas" }: Props)
             <SheetHeader>
               <SheetTitle>Adicionar novo grupo</SheetTitle>
             </SheetHeader>
-            <CreateTaskGroupForm onSuccessfulSubmit={onSuccessfulSubmit} />
+            <CreateTaskListForm onSuccessfulSubmit={onSuccessfulSubmit} />
           </SheetContent>
         </Sheet>
       </CardHeader>

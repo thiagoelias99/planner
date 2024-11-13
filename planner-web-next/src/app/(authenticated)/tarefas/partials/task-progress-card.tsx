@@ -38,7 +38,7 @@ export default function TaskProgressCard({ header = "Progresso", tasks, classNam
 
   return (
     <Card className={cn("", className)}>
-      <CardContent className='flex flex-col justify-center items-center'>
+      <CardContent className='flex flex-col justify-center items-center p-8'>
         <Caption className="text-muted-foreground">{header}</Caption>
         <p className='mt-2 text-xl text-muted-foreground'>
           <CountUp start={progress.previous} end={progress.current} duration={1} decimals={0} className='text-foreground font-medium text-6xl' />%</p>

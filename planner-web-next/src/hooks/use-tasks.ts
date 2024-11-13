@@ -1,9 +1,12 @@
 // import { Task, TaskCreateRequest, TaskUpdateRequest } from "@/models/task"
 // import { TaskGroup, TaskGroupCreateRequest } from "@/models/task-group"
 import { createTaskAction, getTasksAction } from "@/actions/tasks"
+import { createTaskListAction } from "@/actions/tasks/create-task-list"
 import { deleteTaskAction } from "@/actions/tasks/delete-task"
+import { getTaskListsAction } from "@/actions/tasks/get-task-lists"
 import { updateTaskAction } from "@/actions/tasks/update-task"
 import { CreateTaskDto, ITask, Task, UpdateTaskDto } from "@/models/task"
+import { CreateTaskListDto, ITaskList, TaskList } from "@/models/task-list"
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -24,7 +27,7 @@ export const useTasks = () => {
         queryKey: ["tasks"]
       })
       queryClient.invalidateQueries({
-        queryKey: ["taskGroups"]
+        queryKey: ["taskLists"]
       })
     }
   })
@@ -32,7 +35,11 @@ export const useTasks = () => {
   const { data: tasks, isPending: isLoadingTasks } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const data = await getTasksAction()
+      if (!user) {
+        throw new Error("User not found")
+      }
+
+      const data = await getTasksAction(user.id)
       const parsedData = JSON.parse(data) as ITask[]
 
       return parsedData.map(task => new Task(task))
@@ -51,7 +58,7 @@ export const useTasks = () => {
       })
 
       queryClient.invalidateQueries({
-        queryKey: ["taskGroups"]
+        queryKey: ["taskLists"]
       })
     }
   })
@@ -66,32 +73,40 @@ export const useTasks = () => {
         queryKey: ["tasks"]
       })
       queryClient.invalidateQueries({
-        queryKey: ["taskGroups"]
+        queryKey: ["taskLists"]
       })
     }
   })
 
-  // const { mutateAsync: createGroup, isPending: isCreatingGroup } = useMutation({
-  //   mutationKey: ["createGroup"],
-  //   mutationFn: async (task: TaskGroupCreateRequest) => {
-  //     const { status } = await api.post<TaskGroup>("/groups", task)
-  //     if (status === 201 || status === 200) {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["taskGroups"]
-  //       })
-  //     }
-  //   }
-  // })
+  const { mutateAsync: createList, isPending: isCreatingList } = useMutation({
+    mutationKey: ["createList"],
+    mutationFn: async (data: CreateTaskListDto) => {
+      if (!user) {
+        throw new Error("User not found")
+      }
 
-  // const { data: groups, isPending: isLoadingGroups } = useQuery({
-  //   queryKey: ["taskGroups"],
-  //   queryFn: async () => {
-  //     const response = await api.get<TaskGroup[]>("/groups")
-  //     const data = response.data
-  //     return data
-  //   },
-  //   staleTime: 60_000 * 10
-  // })
+      await createTaskListAction(data, user.id)
+
+      queryClient.invalidateQueries({
+        queryKey: ["taskLists"]
+      })
+    }
+  })
+
+  const { data: lists, isPending: isLoadingLists } = useQuery({
+    queryKey: ["taskLists"],
+    queryFn: async () => {
+      if (!user) {
+        throw new Error("User not found")
+      }
+
+      const data = await getTaskListsAction(user.id)
+      const parsedData = JSON.parse(data) as ITaskList[]
+
+      return parsedData.map(list => new TaskList(list))
+    },
+    staleTime: 60_000 * 10
+  })
 
   // const { mutateAsync: addTaskToGroup } = useMutation({
   //   mutationKey: ["addTaskToGroup"],
@@ -103,7 +118,7 @@ export const useTasks = () => {
   //         return updateDataWithTask(data, taskId, updatedTask)
   //       })
   //       queryClient.invalidateQueries({
-  //         queryKey: ["taskGroups"]
+  //         queryKey: ["taskLists"]
   //       })
   //     }
 
@@ -120,7 +135,7 @@ export const useTasks = () => {
   //         queryKey: ["tasks"]
   //       })
   //       queryClient.invalidateQueries({
-  //         queryKey: ["taskGroups"]
+  //         queryKey: ["taskLists"]
   //       })
   //     }
   //   }
@@ -135,10 +150,10 @@ export const useTasks = () => {
     isUpdatingTask,
     deleteTask,
 
-    // groups,
-    // isLoadingGroups,
-    // createGroup,
-    // isCreatingGroup,
+    lists,
+    isLoadingLists,
+    createList,
+    isCreatingList,
     // addTaskToGroup,
     // deleteGroup
   }

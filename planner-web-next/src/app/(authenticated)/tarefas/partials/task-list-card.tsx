@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/context-menu"
 import { Trash2Icon } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
-import { TaskList } from "@prisma/client"
+import { TaskList } from "@/models/task-list"
 
 
 interface Props {
