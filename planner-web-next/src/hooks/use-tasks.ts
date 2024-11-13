@@ -104,8 +104,13 @@ export const useTasks = () => {
 
       const data = await getTaskListsAction(user.id)
       const parsedData = JSON.parse(data) as ITaskList[]
+      const lists = parsedData.map(list => new TaskList(list))
+      const listsWithTasks = lists.map(list => {
+        list.tasks = list.tasks.map(task => new Task(task))
+        return list
+      })
 
-      return parsedData.map(list => new TaskList(list))
+      return listsWithTasks
     },
     staleTime: 60_000 * 10
   })

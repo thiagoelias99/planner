@@ -7,11 +7,10 @@ CREATE TABLE "tasks" (
     "title" TEXT NOT NULL,
     "status" "TaskStatus" NOT NULL DEFAULT 'PENDING',
     "user_id" TEXT NOT NULL,
-    "group_id" TEXT,
     "completed_at" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "taskListId" TEXT,
+    "task_list_id" TEXT,
 
     CONSTRAINT "tasks_pkey" PRIMARY KEY ("id")
 );
@@ -34,4 +33,4 @@ CREATE INDEX "tasks_user_id_idx" ON "tasks"("user_id");
 CREATE INDEX "task_lists_user_id_idx" ON "task_lists"("user_id");
 
 -- AddForeignKey
-ALTER TABLE "tasks" ADD CONSTRAINT "tasks_taskListId_fkey" FOREIGN KEY ("taskListId") REFERENCES "task_lists"("id") ON DELETE SET NULL ON UPDATE NO ACTION;
+ALTER TABLE "tasks" ADD CONSTRAINT "tasks_task_list_id_fkey" FOREIGN KEY ("task_list_id") REFERENCES "task_lists"("id") ON DELETE SET NULL ON UPDATE NO ACTION;

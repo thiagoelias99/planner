@@ -25,13 +25,13 @@ interface Props {
   tasks: Task[] | undefined | null
   header?: string
   className?: ClassNameValue
-  groupId?: string
+  listId?: string
   hideAddButton?: boolean
   hideCounter?: boolean
   maxItems?: number
 }
 
-export default function TaskSection({ tasks, header = "Minhas Tarefas", className, groupId, hideAddButton, hideCounter, maxItems }: Props) {
+export default function TaskSection({ tasks, header = "Minhas Tarefas", className, listId, hideAddButton, hideCounter, maxItems }: Props) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
@@ -60,7 +60,7 @@ export default function TaskSection({ tasks, header = "Minhas Tarefas", classNam
               <SheetHeader>
                 <SheetTitle>Adicionar nova tarefa</SheetTitle>
               </SheetHeader>
-              <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} listId={groupId} />
+              <CreateTaskForm onSuccessfulSubmit={onSuccessfulSubmit} listId={listId} />
             </SheetContent>
           </Sheet>
         )}

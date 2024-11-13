@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { useDroppable } from "@dnd-kit/core"
 
@@ -11,6 +13,7 @@ import { Trash2Icon } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import { TaskList } from "@/models/task-list"
 import { useTasks } from "@/hooks/use-tasks"
+import { useRouter } from "next/navigation"
 
 
 interface Props {
@@ -23,14 +26,14 @@ export default function TaskListCard({ list }: Props) {
   })
 
   const { deleteList } = useTasks()
-  // const navigate = useNavigate()
+  const router = useRouter()
 
   async function handleDelete() {
     await deleteList(list.id)
   }
 
   function handleClick() {
-    // navigate(`/tasks/groups/${group.id}`)
+    router.push(`/tarefas/listas/${list.id}`)
   }
 
   return (

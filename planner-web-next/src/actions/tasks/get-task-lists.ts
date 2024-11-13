@@ -17,6 +17,9 @@ export async function getTaskListsAction(userId: string): Promise<string> {
               id: true
             }
           }
+        },
+        orderBy: {
+          createdAt: "desc"
         }
       }
     },
