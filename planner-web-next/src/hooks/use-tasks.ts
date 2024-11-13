@@ -1,8 +1,10 @@
 // import { Task, TaskCreateRequest, TaskUpdateRequest } from "@/models/task"
 // import { TaskGroup, TaskGroupCreateRequest } from "@/models/task-group"
 import { createTaskAction, getTasksAction } from "@/actions/tasks"
+import { addTaskToListAction } from "@/actions/tasks/add-task-to-list"
 import { createTaskListAction } from "@/actions/tasks/create-task-list"
 import { deleteTaskAction } from "@/actions/tasks/delete-task"
+import { deleteTaskListAction } from "@/actions/tasks/delete-task-list"
 import { getTaskListsAction } from "@/actions/tasks/get-task-lists"
 import { updateTaskAction } from "@/actions/tasks/update-task"
 import { CreateTaskDto, ITask, Task, UpdateTaskDto } from "@/models/task"
@@ -108,38 +110,38 @@ export const useTasks = () => {
     staleTime: 60_000 * 10
   })
 
-  // const { mutateAsync: addTaskToGroup } = useMutation({
-  //   mutationKey: ["addTaskToGroup"],
-  //   mutationFn: async ({ taskId, groupId }: { taskId: string, groupId: string }) => {
-  //     const { status, data: updatedTask } = await api.patch<Task>(`/groups/${groupId}/addTask/${taskId}`)
+  const { mutateAsync: addTaskToList } = useMutation({
+    mutationKey: ["addTaskToGroup"],
+    mutationFn: async ({ taskId, taskListId }: { taskId: string, taskListId: string }) => {
+      const task = await addTaskToListAction({ taskId, taskListId })
+      const parsedTask = JSON.parse(task) as ITask
 
-  //     if (status === 200) {
-  //       queryClient.setQueryData(["tasks"], (data: Paginate<Task>) => {
-  //         return updateDataWithTask(data, taskId, updatedTask)
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["taskLists"]
-  //       })
-  //     }
+      queryClient.setQueryData(["tasks"], (data: Task[]) => {
+        return replaceTask(data, new Task(parsedTask))
+      })
 
-  //     return
-  //   }
-  // })
+      queryClient.invalidateQueries({
+        queryKey: ["taskLists"]
+      })
 
-  // const { mutateAsync: deleteGroup } = useMutation({
-  //   mutationKey: ["deleteGroup"],
-  //   mutationFn: async (groupId: string) => {
-  //     const { status } = await api.delete(`/groups/${groupId}`)
-  //     if (status === 204) {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["tasks"]
-  //       })
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["taskLists"]
-  //       })
-  //     }
-  //   }
-  // })
+      return
+    }
+  })
+
+  const { mutateAsync: deleteList } = useMutation({
+    mutationKey: ["deleteGroup"],
+    mutationFn: async (groupId: string) => {
+
+      await deleteTaskListAction(groupId)
+
+      queryClient.invalidateQueries({
+        queryKey: ["tasks"]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["taskLists"]
+      })
+    }
+  })
 
   return {
     tasks,
@@ -154,22 +156,10 @@ export const useTasks = () => {
     isLoadingLists,
     createList,
     isCreatingList,
-    // addTaskToGroup,
-    // deleteGroup
+    addTaskToList,
+    deleteList
   }
 }
-
-// function updateDataWithTask(data: Paginate<Task>, taskId: string, updatedTask: Task) {
-//   return {
-//     ...data,
-//     data: data.data.map(task => {
-//       if (task.id === taskId) {
-//         return updatedTask
-//       }
-//       return task
-//     })
-//   }
-// }
 
 function replaceTask(data: Task[], task: Task): Task[] {
   return data.map(taskItem => {

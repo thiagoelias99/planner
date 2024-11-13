@@ -4,8 +4,8 @@ export interface ITask {
   id: string
   title: string
   status: TaskStatus
-  listId: string
-  listTitle: string
+  listId?: string
+  listTitle?: string
   completedAt?: Date | null
   createdAt: Date
   updatedAt: Date
@@ -15,8 +15,8 @@ export class Task implements ITask {
   public readonly id: string
   public title: string
   public status: TaskStatus
-  public listId: string
-  public listTitle: string
+  public listId?: string
+  public listTitle?: string
 
   public completedAt?: Date | null
   public readonly createdAt: Date
@@ -52,8 +52,8 @@ export class Task implements ITask {
       id: data.id,
       title: data.title,
       status: data.status,
-      listId: "",
-      listTitle: "",
+      listId: data.TaskList?.id,
+      listTitle: data.TaskList?.title,
       completedAt: data.completedAt,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
